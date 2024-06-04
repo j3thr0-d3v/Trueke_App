@@ -1,0 +1,78 @@
+@import "../../node_modules/bootstrap/scss/functions";
+@import "../../node_modules/bootstrap/scss/variables";
+@import "../../node_modules/bootstrap/scss/variables-dark";
+@import "../../node_modules/bootstrap/scss/maps";
+@import "../../node_modules/bootstrap/scss/mixins";
+@import "../../node_modules/bootstrap/scss/utilities";
+
+$utilities: map-merge(
+  $utilities,
+  (
+    "viewport-height":
+      map-merge(
+        map-get($utilities, "viewport-height"),
+        (
+          values:
+            map-merge(
+              map-get(map-get($utilities, "viewport-height"), "values"),
+              (
+                5: 5vh,
+                10: 10vh,
+                15: 15vh,
+                20: 20vh,
+                25: 25vh,
+                30: 30vh,
+                35: 35vh,
+                40: 40vh,
+                45: 45vh,
+                50: 50vh,
+                55: 55vh,
+                60: 60vh,
+                65: 65vh,
+                70: 70vh,
+                75: 75vh,
+                80: 80vh,
+                85: 85vh,
+                90: 90vh,
+                95: 95vh,
+              )
+            ),
+        )
+      ),
+  )
+);
+$utilities: map-merge(
+  $utilities,
+  (
+    "height":
+      map-merge(
+        map-get($utilities, "height"),
+        (
+          values:
+            map-merge(
+              map-get(map-get($utilities, "height"), "values"),
+              (
+                5: 5vh,
+                10: 10vh,
+                15: 15vh,
+                20: 20vh,
+                30: 30vh,
+                35: 35vh,
+                40: 40vh,
+                45: 45vh,
+                55: 55vh,
+                60: 60vh,
+                65: 65vh,
+                70: 70vh,
+                80: 80vh,
+                85: 85vh,
+                90: 90vh,
+                95: 95vh,
+              )
+            ),
+        )
+      ),
+  )
+);
+
+@import "../../node_modules/bootstrap/scss/utilities/api";
