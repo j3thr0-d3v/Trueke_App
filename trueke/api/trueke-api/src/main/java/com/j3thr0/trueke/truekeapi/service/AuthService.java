@@ -8,11 +8,13 @@ import com.j3thr0.trueke.truekeapi.model.Worker;
 import com.j3thr0.trueke.truekeapi.model.enums.UserRoles;
 import com.j3thr0.trueke.truekeapi.repository.AssociationRepository;
 import com.j3thr0.trueke.truekeapi.repository.UserRepository;
+import com.j3thr0.trueke.truekeapi.settings.files.service.StorageService;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.server.ResponseStatusException;
 
 
@@ -27,6 +29,7 @@ public class AuthService {
     private final AssociationRepository associationRepository;
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
+    private final StorageService storageService;
 
     public Association registerNewAssociation(RegisterAssociationRequest newAssociationRequest){
         Association association = Association.builder()
@@ -44,8 +47,9 @@ public class AuthService {
         return association;
     }
 
-    public Collaborator registerNewCollaborator(SingUpCollaboratorRequest newCollaboratorRequest){
+    public Collaborator registerNewCollaborator(SingUpCollaboratorRequest newCollaboratorRequest, MultipartFile file){
         Collaborator collaborator = Collaborator.builder()
+                .avatarImg(storageService.store(file))
                 .name(newCollaboratorRequest.name())
                 .surname(newCollaboratorRequest.surname())
                 .email(newCollaboratorRequest.email())

@@ -62,9 +62,10 @@ public class SecurityConfig {
     @Bean
     public CorsConfigurationSource corsConfigurationSource(){
         CorsConfiguration corsConfiguration = new CorsConfiguration();
-        corsConfiguration.setAllowedOrigins(List.of("http://localhost:5173"));
+        corsConfiguration.setAllowedOrigins(List.of("http://localhost:5173", "http://localhost:8080"));
         corsConfiguration.setAllowedMethods(List.of("POST", "PUT", "GET", "DELETE"));
         corsConfiguration.addAllowedHeader(CorsConfiguration.ALL);
+        corsConfiguration.setExposedHeaders(List.of("Authorization", "Content-Type"));
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", corsConfiguration);
         return source;
@@ -86,7 +87,7 @@ public class SecurityConfig {
                 )
                 .authorizeHttpRequests(auth->
                         auth
-//                                .requestMatchers(HttpMethod.OPTIONS,"/**").permitAll()
+                                .requestMatchers(HttpMethod.GET, "/download/{filename:.+}").permitAll()
                                 .requestMatchers("/collaborator/**").hasRole("COLLABORATOR")
                                 .requestMatchers("/event/**").permitAll()
                                 .requestMatchers(HttpMethod.PUT, "/worker/**").hasAnyRole("STAFF","WORKER")
@@ -103,10 +104,7 @@ public class SecurityConfig {
                                 .anyRequest().authenticated()
                 )
                 .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
-                .headers((headers)->
-                                headers
-                                        .frameOptions(HeadersConfigurer.FrameOptionsConfig::disable)
-                );
+                .headers(AbstractHttpConfigurer::disable);
 
         return http.build();
     }

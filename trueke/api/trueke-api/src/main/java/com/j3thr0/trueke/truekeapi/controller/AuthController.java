@@ -19,6 +19,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.Optional;
 
@@ -44,9 +45,10 @@ public class AuthController {
     //REGISTER COLLABORATOR [DONE]
     @PostMapping("/register/collaborator")
     public ResponseEntity<UserResponse> registerNewCollaborator (
-            @RequestBody SingUpCollaboratorRequest singUpCollaborator
+            @RequestPart("body") SingUpCollaboratorRequest singUpCollaborator,
+            @RequestPart("file") MultipartFile file
     ){
-        Collaborator collaborator = authService.registerNewCollaborator(singUpCollaborator);
+        Collaborator collaborator = authService.registerNewCollaborator(singUpCollaborator, file);
         return ResponseEntity.status(HttpStatus.CREATED).body(UserResponse.fromCollaborator(collaborator));
     }
 

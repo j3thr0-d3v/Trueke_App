@@ -1,9 +1,10 @@
 <script setup>
-    // import EventCard from './EventCard.vue'
 </script>
 
 <template>
-    <!-- <EventCard/> -->
+    <div class="container-fluid h-100 bg-white rounded-5">
+
+    </div>
 </template>
 
 <style scoped>

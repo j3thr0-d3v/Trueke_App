@@ -9,7 +9,7 @@ let username = ref(store.user.username)
 
 const logout = ()=>{
   store.user.token = null;
-  router.push({name: 'auth'})
+  router.push({name: 'login'})
 }
 </script>
 
@@ -35,7 +35,7 @@ const logout = ()=>{
           </button>
           <button
             type="button"
-            class="btn btn-outline-danger btn-lg lemon-font"
+            class="btn btn-outline-danger btn-lg lemon-font border-warning"
             @click="logout"
           >
             <svg

@@ -8,7 +8,7 @@ insert into USERS (ID, NAME, SURNAME, USERNAME, EMAIL, ROLES, PASSWORD, LAST_PAS
     insert into WORKERS (ASSOCIATION_ID, ID, CAREER, DNI, PHONE_NUMBER) values ('3db7aa06-5db8-4d18-9dd5-5bd0446c3bf8', (select ID from USERS where username = 'pau95'), 'Repartidor del Dominos durante mas de 10 años', '05722395H', '+34 652 140 885');
 
 --COLLABORATOR
-insert into USERS (ID, NAME, SURNAME, USERNAME, EMAIL, ROLES, PASSWORD, LAST_PASSWORD_CHANGE_AT, CREATED_AT, ACCOUNT_NON_EXPIRED, ACCOUNT_NON_LOCKED, CREDENTIALS_NON_EXPIRED, ENABLED) values ('ffb1177b-6dfa-44eb-804f-86d2e83c6c34', 'Jeronimo Manuel', 'Perez Gonzalez', 'jero93', 'jero@gmail.com', 'COLLABORATOR', '{bcrypt}$2a$12$kjX.ZItbIOwIXWRmEJ/4meL.fFGOKX8pq1NwUuaZLgR8//kZFlIV6', DATEADD(MONTH,-1,CURRENT_DATE), DATEADD(MONTH,-1,CURRENT_DATE), TRUE, TRUE, TRUE, TRUE);
+insert into USERS (ID, NAME, SURNAME, USERNAME, EMAIL, ROLES, PASSWORD, LAST_PASSWORD_CHANGE_AT, CREATED_AT, AVATAR_IMG, ACCOUNT_NON_EXPIRED, ACCOUNT_NON_LOCKED, CREDENTIALS_NON_EXPIRED, ENABLED) values ('ffb1177b-6dfa-44eb-804f-86d2e83c6c34', 'Jeronimo Manuel', 'Perez Gonzalez', 'jero93', 'jero@gmail.com', 'COLLABORATOR', '{bcrypt}$2a$12$kjX.ZItbIOwIXWRmEJ/4meL.fFGOKX8pq1NwUuaZLgR8//kZFlIV6', DATEADD(MONTH,-1,CURRENT_DATE), DATEADD(MONTH,-1,CURRENT_DATE), 'yop.jpg', TRUE, TRUE, TRUE, TRUE);
     insert into COLLABORATORS (ID, AGE, MOTIVATION, SKILLS) values ((select ID from USERS where username = 'jero93'), 30, 'Me gusta ayudar a los mas necesitados en sus momentos malos', 'Soy bueno reparando cosas, tambien se programar, soy socorrista y profesor de tenis');
 
 --EVENTS

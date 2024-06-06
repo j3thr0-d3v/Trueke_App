@@ -1,24 +1,25 @@
 <script setup>
-import useAuth from '@/stores/auth';
-import { onBeforeMount, onMounted, ref } from 'vue';
+import useAuth from "@/stores/auth";
+import { onMounted, ref } from "vue";
 
 const store = useAuth();
 
-onMounted(async ()=>{
-  await store.getUser()
-  username.value = store.user.username
+onMounted(async () => {
+  await store.getUser();
+  username.value = store.user.username;
   name.value = store.user.name;
   age.value = store.user.age;
-  motivation.value = store.user.motivation
-  skills.value = store.user.skills
-})
+  motivation.value = store.user.motivation;
+  skills.value = store.user.skills;
+  avatarUrl.value = `${store.baseURL}/download/${store.user.avatarUrl}`;
+});
 
-let username = ref('')
-let name = ref('')
-let age = ref('')
-let motivation = ref('')
-let skills = ref('')
-
+let username = ref("");
+let name = ref("");
+let age = ref("");
+let motivation = ref("");
+let skills = ref("");
+let avatarUrl = ref("");
 </script>
 
 <template>
@@ -26,12 +27,12 @@ let skills = ref('')
     <div class="card row h-25 bg-dark justify-content-center p-2">
       <img
         class="card-img object-fit-scale h-100 rounded-5"
-        src="https://estaticos-cdn.prensaiberica.es/clip/fa5f055b-ad24-49a2-8cff-f3abe1c23861_16-9-aspect-ratio_default_0.jpg"
+        :src="avatarUrl"
         alt="profile-pic"
       />
-      <div class="card-img-overlay ">
+      <div class="card-img-overlay">
         <svg
-            class="border border-solid border-warning btn rounded-circle p-1 card-text position-absolute bottom-0 end-0 me-3 mb-3"
+          class="border border-solid border-warning btn rounded-circle p-1 card-text position-absolute bottom-0 end-0 me-3 mb-3"
           xmlns="http://www.w3.org/2000/svg"
           height="30px"
           viewBox="0 0 24 24"
@@ -45,16 +46,39 @@ let skills = ref('')
         </svg>
       </div>
     </div>
-    <div class="text-center">
+    <div class="text-center mb-3">
       <span class="fw-bold fs-4">{{ name }}, {{ age }}</span>
       <span class="fw-bold"> ( {{ username }} )</span>
-      <hr>
+      <hr />
       <h5 class="text-warning">Motivación</h5>
       <span class="fst-italic">"{{ motivation }}"</span>
-      <hr>
+      <hr />
       <h5 class="text-warning">Habilidades</h5>
       <span class="fst-italic">"{{ skills }}"</span>
-      
+      <hr>
+    </div>
+    <h5 class="text-center text-warning">Mis Eventos</h5>
+    <div class="list-group  text-center">
+      <a href="#" class="link list-group-item list-group-item-action mt-2 bg-warning rounded-pill"
+        ><span class="lemon">Mis Colaboraciones</span>
+        <span class="lemon ms-5 badge text-bg-light rounded-pill counter">14</span></a
+      >
+      <a href="#" class="link list-group-item list-group-item-action mt-2 bg-warning rounded-pill"
+        ><span class="lemon">Eventos Por Comenzar</span>
+        <span class="lemon ms-5 badge text-bg-light rounded-pill counter">6</span></a
+      >
+      <a href="#" class="link list-group-item list-group-item-action mt-2 bg-warning rounded-pill"
+        ><span class="lemon">Eventos finalizados</span>
+        <span class="lemon ms-5 badge text-bg-light rounded-pill counter">8</span></a
+      >
+    </div>
+    <div class="container-fluid w-50">
+      <div class="row my-3">
+        <button class="col btn btn-primary rounded-pill fw-bold">Editar Perfil</button>
+      </div>
+      <div class="row">     
+        <button class="col btn btn-danger rounded-pill fw-bold">Borrar Cuenta</button>
+      </div>
     </div>
   </div>
 </template>
@@ -66,5 +90,20 @@ svg {
 svg:hover {
   fill: black;
   background-color: #ffc107 !important;
+}
+@font-face {
+  font-family: "LemonMilkBold";
+  src: url("../assets/font/LEMONMILK-Bold.otf");
+}
+.lemon{
+  font-family: "LemonMilkBold";
+}
+.link:hover{
+  background-color: rgb(163, 53, 34) !important;
+  color: #ffffff;
+  text-shadow: 1px 1px 2px black;
+}
+.counter{
+ text-shadow:  none !important;
 }
 </style>

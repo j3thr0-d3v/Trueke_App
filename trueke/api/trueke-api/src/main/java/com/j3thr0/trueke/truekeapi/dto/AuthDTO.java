@@ -77,6 +77,7 @@ public interface AuthDTO {
             String name,
             String surname,
             String roles,
+            String avatarUrl,
             int age,
             String motivation,
             String skills,
@@ -116,6 +117,7 @@ public interface AuthDTO {
                     .surname(collaborator.getSurname())
                     .roles(getRoles(collaborator.getRoles()))
                     .createdAt(collaborator.getCreatedAt())
+                    .avatarUrl(collaborator.getAvatarImg())
                     .age(collaborator.getAge())
                     .motivation(collaborator.getMotivation())
                     .skills(collaborator.getSkills())

@@ -1,7 +1,9 @@
 import MainView from '@/view/MainView.vue'
-import AuthView from '@/view/AuthView.vue'
+import LoginView from '@/view/LoginView.vue'
+import RegisterView from '@/view/RegisterView.vue'
 import { createRouter, createWebHistory } from 'vue-router'
 import useAuth from '@/stores/auth';
+
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -15,9 +17,17 @@ const router = createRouter({
       }
     },
     {
-      path: '/auth',
-      name: 'auth',
-      component: AuthView,
+      path: '/auth/register',
+      name: 'register',
+      component: RegisterView,
+      meta: {
+        requireAuth: false
+      }
+    },
+    {
+      path: '/auth/login',
+      name: 'login',
+      component: LoginView,
       meta:{
         requireAuth: false
       }
@@ -32,7 +42,7 @@ router.beforeEach((to, from, next)=>{
   
   if(needToAuth && !isAuth){
     auth.user={}
-    next('auth')
+    next({name: 'login'})
   }else{
     next()
   }
