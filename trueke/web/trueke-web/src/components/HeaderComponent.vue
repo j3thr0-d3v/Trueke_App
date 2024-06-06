@@ -1,4 +1,17 @@
-<script setup></script>
+<script setup>
+import router from '@/router';
+import useAuth from '@/stores/auth';
+import { ref } from 'vue';
+
+const store = useAuth();
+
+let username = ref(store.user.username)
+
+const logout = ()=>{
+  store.user.token = null;
+  router.push({name: 'auth'})
+}
+</script>
 
 <template>
   <nav class="navbar bg-dark p-0">
@@ -18,11 +31,12 @@
             type="button"
             class="btn btn-outline-warning btn-lg lemon-font"
           >
-            Juanito Makandé
+            {{username}}
           </button>
           <button
             type="button"
             class="btn btn-outline-danger btn-lg lemon-font"
+            @click="logout"
           >
             <svg
               class="h-100 w-100 m-0 p-0"

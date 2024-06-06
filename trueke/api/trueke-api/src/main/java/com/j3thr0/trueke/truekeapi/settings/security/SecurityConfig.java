@@ -22,6 +22,12 @@ import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.access.AccessDeniedHandler;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+
+import java.util.Arrays;
+import java.util.List;
 
 @Configuration
 @EnableWebSecurity
@@ -54,9 +60,20 @@ public class SecurityConfig {
     }
 
     @Bean
+    public CorsConfigurationSource corsConfigurationSource(){
+        CorsConfiguration corsConfiguration = new CorsConfiguration();
+        corsConfiguration.setAllowedOrigins(List.of("http://localhost:5173"));
+        corsConfiguration.setAllowedMethods(List.of("POST", "PUT", "GET", "DELETE"));
+        corsConfiguration.addAllowedHeader(CorsConfiguration.ALL);
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        source.registerCorsConfiguration("/**", corsConfiguration);
+        return source;
+    }
+
+    @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception{
         http
-                .cors(Customizer.withDefaults())
+                .cors(c->c.configurationSource(corsConfigurationSource()))
                 .csrf(AbstractHttpConfigurer::disable)
                 .exceptionHandling((ex)->
                         ex
@@ -69,6 +86,7 @@ public class SecurityConfig {
                 )
                 .authorizeHttpRequests(auth->
                         auth
+//                                .requestMatchers(HttpMethod.OPTIONS,"/**").permitAll()
                                 .requestMatchers("/collaborator/**").hasRole("COLLABORATOR")
                                 .requestMatchers("/event/**").permitAll()
                                 .requestMatchers(HttpMethod.PUT, "/worker/**").hasAnyRole("STAFF","WORKER")

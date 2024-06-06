@@ -1,4 +1,25 @@
-<script setup></script>
+<script setup>
+import useAuth from '@/stores/auth';
+import { onBeforeMount, onMounted, ref } from 'vue';
+
+const store = useAuth();
+
+onMounted(async ()=>{
+  await store.getUser()
+  username.value = store.user.username
+  name.value = store.user.name;
+  age.value = store.user.age;
+  motivation.value = store.user.motivation
+  skills.value = store.user.skills
+})
+
+let username = ref('')
+let name = ref('')
+let age = ref('')
+let motivation = ref('')
+let skills = ref('')
+
+</script>
 
 <template>
   <div class="container-fluid h-100 bg-white rounded-5 overflow-hidden">
@@ -25,9 +46,15 @@
       </div>
     </div>
     <div class="text-center">
-      <h1>Juanito Makandé, 42</h1>
-      <h3>Juan</h3>
-      <h3>Medina Herranz</h3>
+      <span class="fw-bold fs-4">{{ name }}, {{ age }}</span>
+      <span class="fw-bold"> ( {{ username }} )</span>
+      <hr>
+      <h5 class="text-warning">Motivación</h5>
+      <span class="fst-italic">"{{ motivation }}"</span>
+      <hr>
+      <h5 class="text-warning">Habilidades</h5>
+      <span class="fst-italic">"{{ skills }}"</span>
+      
     </div>
   </div>
 </template>

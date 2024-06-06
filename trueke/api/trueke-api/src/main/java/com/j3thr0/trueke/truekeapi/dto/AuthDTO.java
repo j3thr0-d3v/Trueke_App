@@ -77,6 +77,9 @@ public interface AuthDTO {
             String name,
             String surname,
             String roles,
+            int age,
+            String motivation,
+            String skills,
             String association,
             @JsonFormat(pattern = "dd/MM/yyyy hh:mm:ss")
             LocalDateTime createdAt,
@@ -113,6 +116,9 @@ public interface AuthDTO {
                     .surname(collaborator.getSurname())
                     .roles(getRoles(collaborator.getRoles()))
                     .createdAt(collaborator.getCreatedAt())
+                    .age(collaborator.getAge())
+                    .motivation(collaborator.getMotivation())
+                    .skills(collaborator.getSkills())
                     .build();
         }
 
