@@ -11,7 +11,7 @@ onMounted(async () => {
   age.value = store.user.age;
   motivation.value = store.user.motivation;
   skills.value = store.user.skills;
-  avatarUrl.value = `${store.baseURL}/download/${store.user.avatarUrl}`;
+  avatarUrl.value = store.user.avatarUrl== null ? "https://t3.ftcdn.net/jpg/02/48/42/64/360_F_248426448_NVKLywWqArG2ADUxDq6QprtIzsF82dMF.jpg" : `${store.baseURL}/download/${store.user.avatarUrl}`;
 });
 
 let username = ref("");

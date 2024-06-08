@@ -2,6 +2,8 @@
 import HeaderComponent from "@/components/HeaderComponent.vue";
 import ProfileComponent from "@/components/ProfileComponent.vue";
 import BoardComponent from "@/components/BoardComponent.vue";
+import UpcomingEventsComponent from '@/components/UpcomingEventsComponent.vue';
+
 </script>
 
 <template>
@@ -13,16 +15,18 @@ import BoardComponent from "@/components/BoardComponent.vue";
       <div id="profile-info" class="col-3 h-100 p-4">
         <ProfileComponent></ProfileComponent>
       </div>
-      <div id="main info" class="col-7 bg-danger h-100 p-4">
-        <BoardComponent></BoardComponent>
+      <div id="main-info" class="col-7 h-100 p-4">
+        <BoardComponent/>
       </div>
-      <div id="advertising aside" class="col-2 bg-success"></div>
+      <div id="advertising" class="col-2 h-100 p-4">
+        <UpcomingEventsComponent></UpcomingEventsComponent>
+      </div>
     </div>
   </div>
 </template>
 
 <style scoped>
-#profile-info{
+#profile-info, #main-info, #advertising{
   background-color: burlywood;
 }
 </style>

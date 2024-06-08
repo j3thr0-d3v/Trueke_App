@@ -87,7 +87,7 @@ public class SecurityConfig {
                 )
                 .authorizeHttpRequests(auth->
                         auth
-                                .requestMatchers(HttpMethod.GET, "/download/{filename:.+}").permitAll()
+                                .requestMatchers("/download/{filename:.+}").permitAll()
                                 .requestMatchers("/collaborator/**").hasRole("COLLABORATOR")
                                 .requestMatchers("/event/**").permitAll()
                                 .requestMatchers(HttpMethod.PUT, "/worker/**").hasAnyRole("STAFF","WORKER")
