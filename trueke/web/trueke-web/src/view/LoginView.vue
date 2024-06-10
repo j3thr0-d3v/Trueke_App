@@ -15,7 +15,7 @@ const loginUser = async () => {
   if (!success) {
     feedback.value = "El Login ha fallado";
   } else {
-    router.push({ name: "main" });
+    router.push("/");
   }
 };
 </script>
@@ -57,7 +57,10 @@ const loginUser = async () => {
             Entrar
           </button>
           <p class="text-danger">{{ feedback }}</p>
+          
         </form>
+        <router-link class="text-center d-flex justify-content-center mt-3 text-decoration-none" to="/auth/register">¿Quieres registrate? Pulsa aquí</router-link>
+        
       </div>
     </div>
   </div>

@@ -24,6 +24,7 @@ public class Event {
     private UUID id;
     private String title;
     private String headline;
+    @Column(columnDefinition = "text")
     private String description;
     private String location;
     private String eventImg;
@@ -39,12 +40,12 @@ public class Event {
     @JoinTable(
             name = "COLLABORATIONS",
             joinColumns = @JoinColumn(
-                    name = "collaborator_id",
+                    name = "event_id",
                     foreignKey = @ForeignKey(name = "FK_COLLABORATIONS_TO_EVENTS"),
                     nullable = false
             ),
             inverseJoinColumns = @JoinColumn(
-                    name = "event_id",
+                    name = "collaborator_id",
                     foreignKey = @ForeignKey(name = "FK_COLLABORATIONS_TO_COLLABORATORS"),
                     nullable = false
             )

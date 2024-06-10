@@ -35,7 +35,7 @@ public class EventController {
             @PathVariable UUID event_id
     ){
         Event event = eventService.findById(event_id);
-        return ResponseEntity.ok(EventResponse.of(event));
+        return ResponseEntity.ok(EventResponse.ofDetailed(event));
     }
 
 }

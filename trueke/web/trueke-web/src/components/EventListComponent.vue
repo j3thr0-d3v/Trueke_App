@@ -1,6 +1,5 @@
 <script setup>
-import EventItem from '@/components/EventItemComponent.vue'
-import { ref } from 'vue';
+import EventItem from '@/components/EventItemComponent.vue';
 
 const props = defineProps({
     eventList: Array
@@ -9,7 +8,7 @@ const props = defineProps({
 
 <template>
     <div id="list" class="container-fluid h-100 bg-white overflow-y-scroll">
-        <EventItem v-for="elm in props.eventList" :key="elm.title" :title="elm.title" :organizer="elm.organizer" :headline="elm.headline" :location="elm.location" :date="elm.date" :imgUrl="elm.imgUrl"/>
+        <EventItem v-for="elm in props.eventList" :key="elm.title" :id="elm.id" :title="elm.title" :organizer="elm.organizer" :headline="elm.headline" :location="elm.location" :date="elm.date" :imgUrl="elm.imgUrl"/>
     </div>
 </template>
 

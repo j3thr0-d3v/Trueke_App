@@ -10,6 +10,7 @@ const useEvent = defineStore("event", {
     };
   },
   actions: {
+    
     async getAllEvents() {
       const uri = `${this.baseUrl}/event/`;
 
@@ -33,10 +34,32 @@ const useEvent = defineStore("event", {
         console.error("Error fetching data:", error);
       }
     },
+    async getEventDetails(id){
+      const uri = `${this.baseUrl}/event/${id}`
+      
+      try{
+        const response = await axios.get(uri, {
+          headers: {
+            Accept: "application/json",
+          },
+        });
+        if (response.data.status) {
+          console.error(
+            "Error fetching event data:",
+            response.data.message || "Unknown error"
+          );
+          return false;
+        } else {
+          this.event = response.data;
+          return true;
+        }
+      }catch(error) {
+        console.error("Error fetching data:", error);
+      }
+    }
   },
 
-
-
+  
 });
 
 export default useEvent;

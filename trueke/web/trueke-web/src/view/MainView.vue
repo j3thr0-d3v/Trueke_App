@@ -3,6 +3,16 @@ import HeaderComponent from "@/components/HeaderComponent.vue";
 import ProfileComponent from "@/components/ProfileComponent.vue";
 import BoardComponent from "@/components/BoardComponent.vue";
 import UpcomingEventsComponent from '@/components/UpcomingEventsComponent.vue';
+import { onMounted, ref } from "vue";
+import useEvent from "@/stores/event";
+
+const eventStore = useEvent();
+const eventList = ref([])
+
+onMounted(async () => {
+    await eventStore.getAllEvents();
+    eventList.value = eventStore.eventList
+})
 
 </script>
 
@@ -16,10 +26,10 @@ import UpcomingEventsComponent from '@/components/UpcomingEventsComponent.vue';
         <ProfileComponent></ProfileComponent>
       </div>
       <div id="main-info" class="col-7 h-100 p-4">
-        <BoardComponent/>
+        <BoardComponent :eventList/>
       </div>
       <div id="advertising" class="col-2 h-100 p-4">
-        <UpcomingEventsComponent></UpcomingEventsComponent>
+        <UpcomingEventsComponent :eventList/>
       </div>
     </div>
   </div>

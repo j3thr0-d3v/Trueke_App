@@ -1,6 +1,7 @@
 package com.j3thr0.trueke.truekeapi.dto;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.j3thr0.trueke.truekeapi.model.Association;
 import com.j3thr0.trueke.truekeapi.model.Collaborator;
@@ -8,11 +9,14 @@ import com.j3thr0.trueke.truekeapi.model.Collaborator;
 import com.j3thr0.trueke.truekeapi.model.User;
 import com.j3thr0.trueke.truekeapi.model.Worker;
 import com.j3thr0.trueke.truekeapi.model.enums.UserRoles;
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NegativeOrZero;
 import lombok.Builder;
 
 
 import java.time.LocalDateTime;
 import java.util.Collections;
+import java.util.List;
 import java.util.Set;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -78,10 +82,11 @@ public interface AuthDTO {
             String surname,
             String roles,
             String avatarUrl,
-            int age,
+            Integer age,
             String motivation,
             String skills,
             String association,
+            List<EventDTO.EventResponse> collaborations,
             @JsonFormat(pattern = "dd/MM/yyyy hh:mm:ss")
             LocalDateTime createdAt,
             String token,
@@ -110,6 +115,7 @@ public interface AuthDTO {
         }
 
         public static UserResponse fromCollaborator(Collaborator collaborator) {
+
             return UserResponse.builder()
                     .id(collaborator.getId())
                     .username(collaborator.getUsername())
@@ -121,8 +127,15 @@ public interface AuthDTO {
                     .age(collaborator.getAge())
                     .motivation(collaborator.getMotivation())
                     .skills(collaborator.getSkills())
+                    .collaborations(
+                            collaborator.getCollaborations().stream()
+                                    .map(EventDTO.EventResponse::ofSimplified)
+                                    .toList()
+                    )
                     .build();
         }
+
+
 
         public static UserResponse fromWorker(Worker worker) {
             return UserResponse.builder()

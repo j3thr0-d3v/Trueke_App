@@ -1,18 +1,14 @@
 <script setup>
-import useEvent from "@/stores/event";
-import { Suspense, computed, onMounted, ref } from "vue";
+import { computed} from "vue";
 
-const eventStore = useEvent();
-const {eventList} = eventStore;
-
-const computedEventList = computed(()=>eventStore.event.eventList);
-computedEventList && computedEventList >0 ? console.log("ESTAMOS MI GENTE") : console.log("NOSTAMOS")
-
+const props = defineProps({
+  eventList: Array
+});
 
 const uri = import.meta.env.VITE_VUE_APP_API_URL
 
 const threeMostRecentUpcomingEvents = computed(() => {
-    const sortedEvents = eventList.sort((a, b) => new Date(b.date) - new Date(a.date))
+    const sortedEvents = props.eventList.sort((a, b) => new Date(b.date) - new Date(a.date))
     const threeMostRecentUpcomingEvents = sortedEvents.slice(0,3);
     return threeMostRecentUpcomingEvents;
 })

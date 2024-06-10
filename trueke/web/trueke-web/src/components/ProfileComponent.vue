@@ -1,6 +1,6 @@
 <script setup>
 import useAuth from "@/stores/auth";
-import { onMounted, ref } from "vue";
+import { computed, onMounted, onUpdated, ref } from "vue";
 
 const store = useAuth();
 
@@ -11,7 +11,10 @@ onMounted(async () => {
   age.value = store.user.age;
   motivation.value = store.user.motivation;
   skills.value = store.user.skills;
-  avatarUrl.value = store.user.avatarUrl== null ? "https://t3.ftcdn.net/jpg/02/48/42/64/360_F_248426448_NVKLywWqArG2ADUxDq6QprtIzsF82dMF.jpg" : `${store.baseURL}/download/${store.user.avatarUrl}`;
+  avatarUrl.value =
+    store.user.avatarUrl == null
+      ? "https://t3.ftcdn.net/jpg/02/48/42/64/360_F_248426448_NVKLywWqArG2ADUxDq6QprtIzsF82dMF.jpg"
+      : `${store.baseURL}/download/${store.user.avatarUrl}`;
 });
 
 let username = ref("");
@@ -20,6 +23,48 @@ let age = ref("");
 let motivation = ref("");
 let skills = ref("");
 let avatarUrl = ref("");
+
+function parseDate(dateString){
+  const [day, month, year] = dateString.split("/")
+  console.log(day)
+  let dateParsed = new Date(parseInt(year), parseInt(month) - 1, parseInt(day))
+  console.log(dateParsed)
+  return dateParsed
+}
+
+const totalEventsAboutStart = () => {
+  const currentDate = new Date();
+
+  if (store.user.collaborations && store.user.collaborations.length > 0) {
+    let filtered = store.user.collaborations.filter(e => parseDate(e.date) >= currentDate);
+    return filtered.length
+  } else {
+    return 0;
+  }
+};
+
+const totalEventsFinished = () => {
+  const currentDate = new Date ();
+
+  if (store.user.collaborations && store.user.collaborations.length > 0) {
+    let filtered = store.user.collaborations.filter(e => parseDate(e.date) <= currentDate);
+    return filtered.length
+  }
+  return 0;
+}
+
+// function totalEventsAboutStart() {
+//   const currentDate = new Date();
+//   if (store.user.collaborations) {
+//     const filteredObjects = store.user.collaborations.filter((obj) => {
+//       const objectDate = new Date(obj.fecha);
+//       return objectDate <= currentDate;
+//     });
+//     return filteredObjects.length;
+//   } else {
+//     return 0;
+//   }
+// }
 </script>
 
 <template>
@@ -55,29 +100,45 @@ let avatarUrl = ref("");
       <hr />
       <h5 class="text-warning">Habilidades</h5>
       <span class="fst-italic">"{{ skills }}"</span>
-      <hr>
+      <hr />
     </div>
     <h5 class="text-center text-warning">Mis Eventos</h5>
-    <div class="list-group  text-center">
-      <a href="#" class="link list-group-item list-group-item-action mt-2 bg-warning rounded-pill"
+    <div class="list-group text-center">
+      <a
+        href="#"
+        class="link list-group-item list-group-item-action mt-2 bg-warning rounded-pill"
         ><span class="lemon">Mis Colaboraciones</span>
-        <span class="lemon ms-5 badge text-bg-light rounded-pill counter">14</span></a
+        <span class="lemon ms-5 badge text-bg-light rounded-pill counter">{{
+          store.user.collaborations ? store.user.collaborations.length : 0
+        }}</span></a
       >
-      <a href="#" class="link list-group-item list-group-item-action mt-2 bg-warning rounded-pill"
+      <a
+        href="#"
+        class="link list-group-item list-group-item-action mt-2 bg-warning rounded-pill"
         ><span class="lemon">Eventos Por Comenzar</span>
-        <span class="lemon ms-5 badge text-bg-light rounded-pill counter">6</span></a
+        <span class="lemon ms-5 badge text-bg-light rounded-pill counter">{{
+          totalEventsAboutStart()
+        }}</span></a
       >
-      <a href="#" class="link list-group-item list-group-item-action mt-2 bg-warning rounded-pill"
+      <a
+        href="#"
+        class="link list-group-item list-group-item-action mt-2 bg-warning rounded-pill"
         ><span class="lemon">Eventos finalizados</span>
-        <span class="lemon ms-5 badge text-bg-light rounded-pill counter">8</span></a
+        <span class="lemon ms-5 badge text-bg-light rounded-pill counter"
+          >{{totalEventsFinished()}}</span
+        ></a
       >
     </div>
     <div class="container-fluid w-50">
       <div class="row my-3">
-        <button class="col btn btn-primary rounded-pill fw-bold">Editar Perfil</button>
+        <button class="col btn btn-primary rounded-pill fw-bold">
+          Editar Perfil
+        </button>
       </div>
-      <div class="row">     
-        <button class="col btn btn-danger rounded-pill fw-bold">Borrar Cuenta</button>
+      <div class="row">
+        <button class="col btn btn-danger rounded-pill fw-bold">
+          Borrar Cuenta
+        </button>
       </div>
     </div>
   </div>
@@ -95,15 +156,15 @@ svg:hover {
   font-family: "LemonMilkBold";
   src: url("../assets/font/LEMONMILK-Bold.otf");
 }
-.lemon{
+.lemon {
   font-family: "LemonMilkBold";
 }
-.link:hover{
+.link:hover {
   background-color: rgb(163, 53, 34) !important;
   color: #ffffff;
   text-shadow: 1px 1px 2px black;
 }
-.counter{
- text-shadow:  none !important;
+.counter {
+  text-shadow: none !important;
 }
 </style>

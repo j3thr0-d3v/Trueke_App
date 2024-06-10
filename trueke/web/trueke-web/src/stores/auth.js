@@ -6,12 +6,12 @@ const useAuth = defineStore("auth", {
   state: () => {
     return {
       user: {},
+      userEvents: [],
       token: null,
       baseURL: import.meta.env.VITE_VUE_APP_API_URL,
     };
   },
   actions: {
-    //AXIOS
     async registerCollaborator(singUpCollaboratorRequest, img) {
       const uri = `${this.baseURL}/auth/register/collaborator`;
 
@@ -46,29 +46,7 @@ const useAuth = defineStore("auth", {
         return false;
       }
     },
-    //FETCH API
-    // async registerCollaborator(singUpCollaboratorRequest, img) {
-    //   let formData = new FormData();
-    //   formData.append("file", img);
-    //   formData.append(
-    //     "body",
-    //     new Blob([JSON.stringify(singUpCollaboratorRequest)], {
-    //       type: "application/json",
-    //     })
-    //   );
-    //   const uri = `${this.baseURL}/auth/register/collaborator`;
-    //   const rawResponse = await fetch(uri, {
-    //     method: "POST",
-    //     body: formData,
-    //   });
-    //   const response = await rawResponse.json();
-    //   if (response.status) {
-    //     return false;
-    //   } else {
-    //     return true;
-    //   }
-    // },
-    //AXIOS
+
     async login(username, password) {
       const uri = `${this.baseURL}/auth/login`;
 
@@ -107,30 +85,7 @@ const useAuth = defineStore("auth", {
         return false;
       }
     },
-    //FETCH API
-    // async login(username, password) {
-    //   const uri = `${this.baseURL}/auth/login`;
-    //   const rawResponse = await fetch(uri, {
-    //     method: "POST",
-    //     headers: {
-    //       "Content-Type": "application/json",
-    //       Accept: "application/json",
-    //     },
-    //     body: JSON.stringify({
-    //       username: username,
-    //       password: password,
-    //     }),
-    //   });
-    //   const response = await rawResponse.json();
-    //   if (response.status) {
-    //     return false;
-    //   } else {
-    //     this.user = response;
-    //     this.token = response.token;
-    //     return true;
-    //   }
-    // },
-    //AXIOS
+
     async getUser() {
       const roles = this.user.roles.split(",");
 
@@ -163,30 +118,64 @@ const useAuth = defineStore("auth", {
         console.log("User is not a collaborator");
       }
     },
-    //FETCH API
-    // async getUser() {
-    //   let roles = this.user.roles.split(",");
-    //   if (roles.includes("COLLABORATOR")) {
-    //     let uri = `${this.baseURL}/collaborator/${this.user.id}`;
-    //     const rawResponse = await fetch(uri, {
-    //       method: "GET",
-    //       headers: {
-    //         "Content-Type": "application/json",
-    //         Accept: "application/json",
-    //         Authorization: `Bearer ${this.token}`,
-    //       },
-    //     });
-    //     const response = await rawResponse.json();
-    //     if (response.status) {
-    //       return false;
-    //     } else {
-    //       this.user = response;
-    //       return true;
-    //     }
-    //   } else {
-    //     console.log("NO ES COLABORATOR");
-    //   }
-    // },
+
+    //COLLABORATOR
+    async singUpEvent(eventId) {
+      const uri = `${this.baseURL}/collaborator/${this.user.id}/event/${eventId}`;
+      try {
+        const response = await axios.post(
+          uri,
+          {},
+          {
+            headers: {
+              Authorization: `Bearer ${this.token}`,
+              Accept: "application/json",
+            },
+          }
+        );
+
+        if (response.data.status) {
+          console.error(
+            "Error while subscribing to event:",
+            response.data.message || "Unknown error"
+          );
+          return false;
+        } else {
+          this.getUser()
+          return true;
+        }
+      } catch (error) {
+        console.error("Subscribing error:", error);
+        return false;
+      }
+    },
+
+    async unregisterFromEvent(eventId){
+      const uri = `${this.baseURL}/collaborator/${this.user.id}/event/${eventId}`;
+      try{
+        const response = await axios.delete(uri,{
+          headers:{
+            Authorization: `Bearer ${this.token}`,
+            Accept: 'application/json'
+          }
+        });
+        if(response.data.status){
+          console.error(
+            "Error while deleting subscription:",
+            response.data.message || "Unknown error"
+          );
+          return false;
+        }else{
+          this.getUser()
+          return true;
+        }
+      }catch(error){
+        console.error("Deleting subscription error:", error);
+        return false
+      }
+    }
+
+    //NEXT
   },
 });
 

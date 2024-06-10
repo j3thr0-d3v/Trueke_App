@@ -16,13 +16,13 @@ public interface CollaboratorDTO {
     @Builder
     public record SingUpEventResponse(
             String username,
-            String status,
+            String statusOfCollaborator,
             EventDTO.EventResponse eventSubscribed
     ){
         public static SingUpEventResponse of (Collaborator collaborator, Event event){
             return SingUpEventResponse.builder()
                     .username(collaborator.getUsername())
-                    .status("SUBSCRIBED")
+                    .statusOfCollaborator("SUBSCRIBED")
                     .eventSubscribed(EventDTO.EventResponse.of(event))
                     .build();
         }
