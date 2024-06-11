@@ -25,6 +25,8 @@ onMounted(async () => {
   event.value = eventStore.event;
 });
 
+console.log("parametros de la ruta"+route.path)
+
 const isSubscribed = () => {
   if (
     authStore.user.collaborations &&
@@ -38,6 +40,8 @@ const isSubscribed = () => {
     return false;
   }
 };
+
+router.getRoutes().forEach(r => console.log(r))
 </script>
 
 <template>
@@ -45,11 +49,12 @@ const isSubscribed = () => {
     id="detail"
     class="container-fluid h-100 overflow-y-scroll position-relative"
   >
-    <router-link
+    <button
       class="btn btn-dark text-warning border border-2 border-warning fs-5 position-fixed mt-3 rounded-circle"
-      to="/"
+      @click="$router.back()"
+
       ><i class="bi bi-arrow-left"></i
-    ></router-link>
+    ></button>
 
     <div class="row px-5 text-center">
       <h1 class="font-lemon bg-success text-white py-1 rounded-pill my-3">

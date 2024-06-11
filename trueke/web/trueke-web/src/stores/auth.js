@@ -6,7 +6,7 @@ const useAuth = defineStore("auth", {
   state: () => {
     return {
       user: {},
-      userEvents: [],
+      roles: null,
       token: null,
       baseURL: import.meta.env.VITE_VUE_APP_API_URL,
     };
@@ -76,6 +76,7 @@ const useAuth = defineStore("auth", {
           // Login successful
           this.user = response.data;
           this.token = response.data.token;
+          this.roles = response.data.roles;
           console.log("Login successful!");
           return true;
         }
@@ -86,6 +87,32 @@ const useAuth = defineStore("auth", {
       }
     },
 
+    async changePassword(changeUserPasswordRequest) {
+      const uri = `${this.baseURL}/auth/user/changePassword`;
+
+      try {
+        const response = await axios.put(uri, changeUserPasswordRequest, {
+          headers: {
+            Accept: "application/json",
+            Authorization: `Bearer ${this.token}`,
+          },
+        });
+        if (response.data.status) {
+          console.error(
+            "Change password request failed:",
+            response.data.message || "Unknown error"
+          );
+          return false;
+        } else {
+          return true;
+        }
+      } catch (error) {
+        console.error("Changing password error:", error);
+        return false;
+      }
+    },
+
+    //COLLABORATOR
     async getUser() {
       const roles = this.user.roles.split(",");
 
@@ -119,7 +146,6 @@ const useAuth = defineStore("auth", {
       }
     },
 
-    //COLLABORATOR
     async singUpEvent(eventId) {
       const uri = `${this.baseURL}/collaborator/${this.user.id}/event/${eventId}`;
       try {
@@ -141,7 +167,7 @@ const useAuth = defineStore("auth", {
           );
           return false;
         } else {
-          this.getUser()
+          this.getUser();
           return true;
         }
       } catch (error) {
@@ -150,30 +176,92 @@ const useAuth = defineStore("auth", {
       }
     },
 
-    async unregisterFromEvent(eventId){
+    async unregisterFromEvent(eventId) {
       const uri = `${this.baseURL}/collaborator/${this.user.id}/event/${eventId}`;
-      try{
-        const response = await axios.delete(uri,{
-          headers:{
+      try {
+        const response = await axios.delete(uri, {
+          headers: {
             Authorization: `Bearer ${this.token}`,
-            Accept: 'application/json'
-          }
+            Accept: "application/json",
+          },
         });
-        if(response.data.status){
+        if (response.data.status) {
           console.error(
             "Error while deleting subscription:",
             response.data.message || "Unknown error"
           );
           return false;
-        }else{
-          this.getUser()
+        } else {
+          this.getUser();
           return true;
         }
-      }catch(error){
+      } catch (error) {
         console.error("Deleting subscription error:", error);
-        return false
+        return false;
       }
-    }
+    },
+
+    async editCollaborator(updateCollaboratorRequest, img) {
+      const uri = `${this.baseURL}/collaborator/${this.user.id}`;
+
+      try {
+        const formData = new FormData();
+        formData.append("file", img);
+        formData.append(
+          "body",
+          new Blob([JSON.stringify(updateCollaboratorRequest)], {
+            type: "application/json",
+          })
+        );
+
+        const response = await axios.put(uri, formData, {
+          headers: {
+            "Content-Type": "multipart/form-data",
+            Authorization: `Bearer ${this.token}`,
+          },
+        });
+
+        if (response.data.status) {
+          console.error(
+            "Edit process failed:",
+            response.data.message || "Unknown error"
+          );
+        } else {
+          console.log("Edit process succesful!");
+          this.getUser();
+          return true;
+        }
+      } catch (error) {
+        console.error("Editing profile error:", error);
+        return false;
+      }
+    },
+
+    async deleteCollaboratorAccount() {
+      const uri = `${this.baseURL}/collaborator/${this.user.id}`;
+      try {
+        const response = await axios.delete(uri, {
+          headers: {
+            Authorization: `Bearer ${this.token}`,
+            Accept: "application/json",
+          },
+        });
+        if (response.data.status) {
+          console.error(
+            "Error while delete account:",
+            response.data.message || "Unknown error"
+          );
+          return false;
+        } else {
+          this.$reset();
+          return true;
+        }
+      } catch (error) {
+        console.error("Deleting account error:", error);
+
+        return false;
+      }
+    },
 
     //NEXT
   },

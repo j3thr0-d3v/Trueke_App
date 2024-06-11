@@ -31,7 +31,7 @@ public class AssociationController {
     private final AssociationService associationService;
     private final WorkerService workerService;
 
-    //GET ALL ASSOCIATIONS [DONE]
+    //GET ALL ASSOCIATIONS [DONE] [DEP]
     @GetMapping("/")
     public ResponseEntity<List<AssociationResponse>> getAllAssociations(){
         List<Association> associations = associationService.findAll();

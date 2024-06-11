@@ -4,6 +4,7 @@ import EventItem from '@/components/EventItemComponent.vue';
 const props = defineProps({
     eventList: Array
 })
+
 </script>
 
 <template>

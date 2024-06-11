@@ -1,4 +1,5 @@
 <script setup>
+import router from "@/router";
 import useAuth from "@/stores/auth";
 import { computed, onMounted, onUpdated, ref } from "vue";
 
@@ -26,9 +27,9 @@ let avatarUrl = ref("");
 
 function parseDate(dateString){
   const [day, month, year] = dateString.split("/")
-  console.log(day)
+  
   let dateParsed = new Date(parseInt(year), parseInt(month) - 1, parseInt(day))
-  console.log(dateParsed)
+  
   return dateParsed
 }
 
@@ -53,18 +54,10 @@ const totalEventsFinished = () => {
   return 0;
 }
 
-// function totalEventsAboutStart() {
-//   const currentDate = new Date();
-//   if (store.user.collaborations) {
-//     const filteredObjects = store.user.collaborations.filter((obj) => {
-//       const objectDate = new Date(obj.fecha);
-//       return objectDate <= currentDate;
-//     });
-//     return filteredObjects.length;
-//   } else {
-//     return 0;
-//   }
-// }
+const deleteAccount = () => {
+  store.deleteCollaboratorAccount(store.user.id)
+  router.push("/auth/login")
+}
 </script>
 
 <template>
@@ -76,6 +69,7 @@ const totalEventsFinished = () => {
         alt="profile-pic"
       />
       <div class="card-img-overlay">
+        <router-link to="/collaborator/edit">
         <svg
           class="border border-solid border-warning btn rounded-circle p-1 card-text position-absolute bottom-0 end-0 me-3 mb-3"
           xmlns="http://www.w3.org/2000/svg"
@@ -89,6 +83,7 @@ const totalEventsFinished = () => {
             d="M18 20H4V6h9V4H4c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-9h-2v9zm-7.79-3.17l-1.96-2.36L5.5 18h11l-3.54-4.71zM20 4V1h-2v3h-3c.01.01 0 2 0 2h3v2.99c.01.01 2 0 2 0V6h3V4h-3z"
           />
         </svg>
+      </router-link>
       </div>
     </div>
     <div class="text-center mb-3">
@@ -104,39 +99,42 @@ const totalEventsFinished = () => {
     </div>
     <h5 class="text-center text-warning">Mis Eventos</h5>
     <div class="list-group text-center">
-      <a
+      <router-link
+      to="/collaborations"
         href="#"
         class="link list-group-item list-group-item-action mt-2 bg-warning rounded-pill"
         ><span class="lemon">Mis Colaboraciones</span>
         <span class="lemon ms-5 badge text-bg-light rounded-pill counter">{{
           store.user.collaborations ? store.user.collaborations.length : 0
-        }}</span></a
+        }}</span></router-link
       >
-      <a
+      <router-link
+      to="/upcoming"
         href="#"
         class="link list-group-item list-group-item-action mt-2 bg-warning rounded-pill"
         ><span class="lemon">Eventos Por Comenzar</span>
         <span class="lemon ms-5 badge text-bg-light rounded-pill counter">{{
           totalEventsAboutStart()
-        }}</span></a
+        }}</span></router-link
       >
-      <a
+      <router-link
+      to="/finished"
         href="#"
         class="link list-group-item list-group-item-action mt-2 bg-warning rounded-pill"
         ><span class="lemon">Eventos finalizados</span>
         <span class="lemon ms-5 badge text-bg-light rounded-pill counter"
           >{{totalEventsFinished()}}</span
-        ></a
+        ></router-link
       >
     </div>
     <div class="container-fluid w-50">
       <div class="row my-3">
-        <button class="col btn btn-primary rounded-pill fw-bold">
+        <router-link class="col btn btn-primary rounded-pill fw-bold" to="/collaborator/edit">
           Editar Perfil
-        </button>
+        </router-link>
       </div>
       <div class="row">
-        <button class="col btn btn-danger rounded-pill fw-bold">
+        <button class="col btn btn-danger rounded-pill fw-bold" @click="deleteAccount">
           Borrar Cuenta
         </button>
       </div>
@@ -166,5 +164,11 @@ svg:hover {
 }
 .counter {
   text-shadow: none !important;
+}
+
+.router-link-exact-active{
+  background-color: rgb(163, 53, 34) !important;
+  color: #ffffff;
+  text-shadow: 1px 1px 2px black;
 }
 </style>

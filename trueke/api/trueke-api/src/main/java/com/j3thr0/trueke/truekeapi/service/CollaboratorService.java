@@ -4,9 +4,11 @@ import com.j3thr0.trueke.truekeapi.dto.CollaboratorDTO.*;
 import com.j3thr0.trueke.truekeapi.model.Collaborator;
 import com.j3thr0.trueke.truekeapi.model.Event;
 import com.j3thr0.trueke.truekeapi.repository.CollaboratorRepository;
+import com.j3thr0.trueke.truekeapi.settings.files.service.StorageService;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.UUID;
 
@@ -15,13 +17,18 @@ import java.util.UUID;
 public class CollaboratorService {
 
     private final CollaboratorRepository collaboratorRepository;
+    private final StorageService storageService;
 
     public Collaborator findById(UUID id){
         return collaboratorRepository.findById(id)
                 .orElseThrow(()-> new EntityNotFoundException("Collaborator not found"));
     }
 
-    public Collaborator editCollaborator(Collaborator collaborator, UpdateCollaboratorRequest updateRequest){
+    public Collaborator editCollaborator(Collaborator collaborator, UpdateCollaboratorRequest updateRequest, MultipartFile file){
+
+        storageService.deleteFile(collaborator.getAvatarImg());
+
+        collaborator.setAvatarImg(storageService.store(file));
         collaborator.setName(updateRequest.name());
         collaborator.setSurname(updateRequest.surname());
         collaborator.setSkills(updateRequest.skills());
