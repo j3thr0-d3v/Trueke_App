@@ -12,6 +12,6 @@ public class InitData {
 
     @PostConstruct
     void init(){
-        Event event = Event.builder().build();
+
     }
 }

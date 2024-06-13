@@ -19,7 +19,9 @@ public interface AssociationDTO {
             String name,
             String address,
             String mission,
-            String cif
+            String cif,
+            String banner,
+            String logo
 
     ){
         public static AssociationResponse of(Association association){
@@ -29,6 +31,8 @@ public interface AssociationDTO {
                     .address(association.getAddress())
                     .mission(association.getMission())
                     .cif(association.getCif())
+                    .banner(association.getBannerImg())
+                    .logo(association.getLogoImg())
                     .build();
         }
     }

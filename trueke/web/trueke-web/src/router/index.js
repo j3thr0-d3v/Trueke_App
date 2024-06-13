@@ -7,6 +7,10 @@ import { createRouter, createWebHistory } from "vue-router";
 import useAuth from "@/stores/auth";
 import EditCollaboratorView from "@/view/EditCollaboratorView.vue";
 import MainAssociationView from "@/view/MainAssociationView.vue";
+import AssociationEventList from "@/components/AssociationEventList.vue";
+import AssociationInfo from "@/components/AssociationInfo.vue"
+import AssociationCrewList from "@/components/AssociationCrewList.vue"
+import RegisterAssociationView from "@/view/RegisterAssociationView.vue"
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -14,7 +18,27 @@ const router = createRouter({
     {
       path: "/association",
       name: "association-main",
-      component: MainAssociationView
+      component: MainAssociationView,
+      children:[
+        {
+          path: "",
+          name: "association-events",
+          component: AssociationEventList
+        },
+        {
+          path: "/info",
+          name: "association-info",
+          component: AssociationInfo
+        },
+        {
+          path: "/crew",
+          name: "association-crew",
+          component: AssociationCrewList,
+        }
+      ],
+      meta: {
+        requireAuth: true
+      }
     },
     {
       path: "/",
@@ -67,6 +91,14 @@ const router = createRouter({
       meta: {
         requireAuth: false,
       },
+    },
+    {
+      path: "/auth/register/association",
+      name: "register association",
+      component: RegisterAssociationView,
+      meta:{
+        requireAuth: false
+      }
     },
     {
       path: "/auth/login",

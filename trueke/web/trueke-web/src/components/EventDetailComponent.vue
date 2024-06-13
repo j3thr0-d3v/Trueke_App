@@ -25,7 +25,6 @@ onMounted(async () => {
   event.value = eventStore.event;
 });
 
-console.log("parametros de la ruta"+route.path)
 
 const isSubscribed = () => {
   if (

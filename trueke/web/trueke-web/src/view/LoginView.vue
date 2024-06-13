@@ -14,12 +14,13 @@ const loginUser = async () => {
   const success = await store.login(username.value, password.value);
   if (!success) {
     feedback.value = "El Login ha fallado";
+    router.push("/auth/login")
   } else {
-    store.roles.split(",").includes("COLLABORATOR")?
-    router.push("/")
-    : router.push("/association")
-    // console.log(store.roles.split(",").includes("COLLABORATOR"))
-    // router.push("/");
+    if(store.roles.split(",").includes("COLLABORATOR")){
+      router.push("/")
+    }else{
+      router.push("/association")
+    }
   }
 };
 </script>
@@ -64,7 +65,7 @@ const loginUser = async () => {
           
         </form>
         <router-link class="text-center d-flex justify-content-center mt-3 text-decoration-none" to="/auth/register">¿Quieres registrate? Pulsa aquí</router-link>
-        <router-link class="text-center d-flex justify-content-center mt-3 text-decoration-none" to="">¿Tienes una asociación? Únete pinchando aquí</router-link>
+        <router-link class="text-center d-flex justify-content-center mt-3 text-decoration-none" to="/auth/register/association">¿Tienes una asociación? Únete pinchando aquí</router-link>
         
       </div>
     </div>

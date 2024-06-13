@@ -90,7 +90,7 @@ public class AuthController {
             @AuthenticationPrincipal User userLogged
     ){
         authService.passwordMatch(userLogged, changePasswordRequest.oldPassword());
-        User modified =  authService.editPassword(userLogged.getId(), changePasswordRequest.newPassword());
+        User modified = authService.editPassword(userLogged.getId(), changePasswordRequest.newPassword());
         return ResponseEntity.ok(UserResponse.fromUser(modified));
     }
 }

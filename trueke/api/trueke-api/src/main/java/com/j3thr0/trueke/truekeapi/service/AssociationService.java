@@ -44,6 +44,11 @@ public class AssociationService {
                 .orElseThrow(()-> new EntityNotFoundException("Association not found"));
     }
 
+    public Association findByName(String name){
+        return associationRepository.findFirstByName(name)
+                .orElseThrow(()-> new EntityNotFoundException("Associaiton not found"));
+    }
+
     public List<Association> findAll(){
         return associationRepository.findAll();
     }

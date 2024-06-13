@@ -2,7 +2,9 @@ package com.j3thr0.trueke.truekeapi.controller;
 
 import com.j3thr0.trueke.truekeapi.dto.AuthDTO.*;
 import com.j3thr0.trueke.truekeapi.dto.WorkerDTO.*;
+import com.j3thr0.trueke.truekeapi.model.Association;
 import com.j3thr0.trueke.truekeapi.model.Worker;
+import com.j3thr0.trueke.truekeapi.service.AssociationService;
 import com.j3thr0.trueke.truekeapi.service.WorkerService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;

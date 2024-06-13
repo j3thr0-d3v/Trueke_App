@@ -44,6 +44,7 @@ public interface EventDTO {
         LocalTime startTime,
         @JsonFormat(pattern = "HH:mm")
         LocalTime endTime,
+        int totalCollaborators,
         String organizer
     ){
         public static EventResponse of(Event event){
@@ -55,6 +56,7 @@ public interface EventDTO {
                     .location(event.getLocation())
                     .date(event.getStartDate().toLocalDate())
                     .imgUrl(event.getEventImg())
+                    .totalCollaborators(event.getCollaborators().size())
 //                    .startDate(event.getStartDate())
 //                    .endDate(event.getEndDate())
                     .organizer(event.getOrganizer().getName())

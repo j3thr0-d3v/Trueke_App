@@ -85,7 +85,12 @@ public interface AuthDTO {
             Integer age,
             String motivation,
             String skills,
-            String association,
+            String associationName,
+            AssociationDTO.AssociationResponse association,
+            String email,
+            String phone,
+            String dni,
+            String career,
             List<EventDTO.EventResponse> collaborations,
             @JsonFormat(pattern = "dd/MM/yyyy hh:mm:ss")
             LocalDateTime createdAt,
@@ -102,7 +107,7 @@ public interface AuthDTO {
                     .surname(user.getSurname())
                     .roles(getRoles(user.getRoles()))
                     .createdAt(user.getCreatedAt())
-                    .association(((Worker) user).getAssociation().getName())
+                    .associationName(((Worker) user).getAssociation().getName())
                     .build()
                 :UserResponse.builder()
                     .id(user.getId())
@@ -143,9 +148,15 @@ public interface AuthDTO {
                     .username(worker.getUsername())
                     .name(worker.getName())
                     .surname(worker.getSurname())
+                    .email(worker.getEmail())
+                    .dni(worker.getDni())
+                    .phone(worker.getPhoneNumber())
+                    .career(worker.getCareer())
                     .roles(getRoles(worker.getRoles()))
                     .createdAt(worker.getCreatedAt())
-                    .association(worker.getAssociation().getName())
+                    .associationName( worker.getAssociation().getName())
+                    .association(AssociationDTO.AssociationResponse.of(worker.getAssociation()))
+                    .avatarUrl(worker.getAvatarImg())
                     .build();
         }
 
@@ -158,7 +169,7 @@ public interface AuthDTO {
                             .surname(user.getSurname())
                             .roles(getRoles(user.getRoles()))
                             .createdAt(user.getCreatedAt())
-                            .association(((Worker) user).getAssociation().getName())
+                            .associationName(((Worker) user).getAssociation().getName())
                             .token(token)
                             .refreshToken(refreshToken)
                             .build()

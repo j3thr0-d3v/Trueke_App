@@ -111,38 +111,37 @@ const useAuth = defineStore("auth", {
         return false;
       }
     },
-
+    //WORKER
     //COLLABORATOR
     async getUser() {
       const roles = this.user.roles.split(",");
-
+      let uri = ""
       if (roles.includes("COLLABORATOR")) {
-        const uri = `${this.baseURL}/collaborator/${this.user.id}`;
-
-        try {
-          const response = await axios.get(uri, {
-            headers: {
-              Authorization: `Bearer ${this.token}`,
-              Accept: "application/json",
-            },
-          });
-
-          if (response.data.status) {
-            console.error(
-              "Error fetching user data:",
-              response.data.message || "Unknown error"
-            );
-            return false;
-          } else {
-            this.user = response.data;
-            return true;
-          }
-        } catch (error) {
-          console.error("Error fetching user data:", error);
-          return false;
-        }
+         uri = `${this.baseURL}/collaborator/${this.user.id}`;
       } else {
-        console.log("User is not a collaborator");
+         uri = `${this.baseURL}/worker/${this.user.id}`;
+      }
+      try {
+        const response = await axios.get(uri, {
+          headers: {
+            Authorization: `Bearer ${this.token}`,
+            Accept: "application/json",
+          },
+        });
+
+        if (response.data.status) {
+          console.error(
+            "Error fetching user data:",
+            response.data.message || "Unknown error"
+          );
+          return false;
+        } else {
+          this.user = response.data;
+          return true;
+        }
+      } catch (error) {
+        console.error("Error fetching user data:", error);
+        return false;
       }
     },
 
