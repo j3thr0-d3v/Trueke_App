@@ -1,5 +1,5 @@
 import { defineStore } from "pinia";
-import axios from 'axios';
+import axios from "axios";
 import useAuth from "./auth";
 
 const useEvent = defineStore("event", {
@@ -11,40 +11,41 @@ const useEvent = defineStore("event", {
     };
   },
   actions: {
-    
-    async createEvent(associationId, createEventRequest, eventImg){
+    async createEvent(associationId, createEventRequest, eventImg) {
       const uri = `${this.baseUrl}/association/${associationId}/event`;
-      try{
+      try {
         const formData = new FormData();
         formData.append("file", eventImg);
         formData.append(
-          "body", new Blob([JSON.stringify(createEventRequest)],{
-            type: "application/json"
+          "body",
+          new Blob([JSON.stringify(createEventRequest)], {
+            type: "application/json",
           })
         );
         const response = await axios.post(uri, formData, {
           headers: {
-            "Authorization" : `Bearer ${useAuth().token}`,
-            "Content-Type" : "multipart/form-data"
-          }
+            Authorization: `Bearer ${useAuth().token}`,
+            "Content-Type": "multipart/form-data",
+          },
         });
 
-        if(response.data.status){
+        if (response.data.status) {
           console.error(
             "Create event process failed:",
             response.data.message || "Unknown error"
           );
-        } else{
+        } else {
           console.log("Event Created!");
           this.getAssociationEvents(associationId);
           return true;
         }
-      }catch(error){
+      } catch (error) {
         console.error("Creating event error:", error);
-        return false
+        return false;
       }
-
     },
+
+    async editEvent(associationId, editEventRequest){},
 
     async getAllEvents() {
       const uri = `${this.baseUrl}/event/`;
@@ -69,10 +70,10 @@ const useEvent = defineStore("event", {
         console.error("Error fetching data:", error);
       }
     },
-    async getEventDetails(id){
-      const uri = `${this.baseUrl}/event/${id}`
-      
-      try{
+    async getEventDetails(id) {
+      const uri = `${this.baseUrl}/event/${id}`;
+
+      try {
         const response = await axios.get(uri, {
           headers: {
             Accept: "application/json",
@@ -88,12 +89,12 @@ const useEvent = defineStore("event", {
           this.event = response.data;
           return true;
         }
-      }catch(error) {
+      } catch (error) {
         console.error("Error fetching data:", error);
       }
     },
 
-    async getAssociationEvents(associationId){
+    async getAssociationEvents(associationId) {
       const uri = `${this.baseUrl}/association/${associationId}/event`;
       try {
         const response = await axios.get(uri, {
@@ -114,10 +115,8 @@ const useEvent = defineStore("event", {
       } catch (error) {
         console.error("Error fetching data:", error);
       }
-    }
+    },
   },
-
-  
 });
 
 export default useEvent;
