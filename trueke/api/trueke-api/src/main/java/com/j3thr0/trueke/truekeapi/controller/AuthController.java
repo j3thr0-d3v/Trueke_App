@@ -36,9 +36,12 @@ public class AuthController {
     //REGISTER ASSOCIATION [DONE]
     @PostMapping("/register/association")
     public ResponseEntity<AssociationResponse> registerNewAssociation(
-            @RequestBody RegisterAssociationRequest registerAssociation
+            @RequestPart("body") RegisterAssociationRequest registerAssociation,
+            @RequestPart("logo") MultipartFile logo,
+            @RequestPart("banner") MultipartFile banner,
+            @RequestPart("profile") MultipartFile profile
     ){
-        Association association = authService.registerNewAssociation(registerAssociation);
+        Association association = authService.registerNewAssociation(registerAssociation, logo, banner, profile);
         return ResponseEntity.status(HttpStatus.CREATED).body(AssociationResponse.of(association));
     }
 
@@ -55,9 +58,10 @@ public class AuthController {
     //REGISTER WORKER [DONE]
     @PostMapping("/register/worker")
     public ResponseEntity<UserResponse> registerNewWorker(
-            @RequestBody SingUpWorkerRequest singUpWorker
+            @RequestPart("body") SingUpWorkerRequest singUpWorker,
+            @RequestPart("profile") MultipartFile profile
     ){
-        Worker worker = authService.registerNewWorker(singUpWorker);
+        Worker worker = authService.registerNewWorker(singUpWorker, profile);
         return ResponseEntity.status(HttpStatus.CREATED).body(UserResponse.fromWorker(worker));
     }
 

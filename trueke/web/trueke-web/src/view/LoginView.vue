@@ -9,18 +9,37 @@ let username = ref("");
 let password = ref("");
 let feedback = ref("");
 
+// const loginUser = async () => {
+//   feedback.value = "Sending info...";
+//   const success = await store.login(username.value, password.value);
+//   if (!success) {
+//     feedback.value = "El Login ha fallado";
+//     router.push("/auth/login")
+//   } else {
+//     if(store.roles.split(",").includes("COLLABORATOR")){
+//       router.push("/")
+//     }else{
+//       router.push("/association")
+//     }
+//   }
+// };
 const loginUser = async () => {
-  feedback.value = "Sending info...";
-  const success = await store.login(username.value, password.value);
-  if (!success) {
-    feedback.value = "El Login ha fallado";
-    router.push("/auth/login")
-  } else {
-    if(store.roles.split(",").includes("COLLABORATOR")){
-      router.push("/")
-    }else{
-      router.push("/association")
+  try {
+    feedback.value = "Sending info...";
+    const success = await store.login(username.value, password.value);
+    if (!success) {
+      throw new Error("Login failed"); // Throw a specific error for better handling
     }
+
+    const userRoles = store.roles.split(',');
+    if (userRoles.includes('COLLABORATOR')) {
+      router.push('/');
+    } else {
+      router.push('/association');
+    }
+  } catch (error) {
+    feedback.value = "Login failed: " + error.message; // Provide informative feedback
+    console.error('Login error:', error); // Log the error for debugging
   }
 };
 </script>

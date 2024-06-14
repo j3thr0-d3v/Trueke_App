@@ -1,5 +1,6 @@
 import { defineStore } from "pinia";
 import axios from 'axios';
+import useAuth from "./auth";
 
 const useEvent = defineStore("event", {
   state: () => {
@@ -11,6 +12,40 @@ const useEvent = defineStore("event", {
   },
   actions: {
     
+    async createEvent(associationId, createEventRequest, eventImg){
+      const uri = `${this.baseUrl}/association/${associationId}/event`;
+      try{
+        const formData = new FormData();
+        formData.append("file", eventImg);
+        formData.append(
+          "body", new Blob([JSON.stringify(createEventRequest)],{
+            type: "application/json"
+          })
+        );
+        const response = await axios.post(uri, formData, {
+          headers: {
+            "Authorization" : `Bearer ${useAuth().token}`,
+            "Content-Type" : "multipart/form-data"
+          }
+        });
+
+        if(response.data.status){
+          console.error(
+            "Create event process failed:",
+            response.data.message || "Unknown error"
+          );
+        } else{
+          console.log("Event Created!");
+          this.getAssociationEvents(associationId);
+          return true;
+        }
+      }catch(error){
+        console.error("Creating event error:", error);
+        return false
+      }
+
+    },
+
     async getAllEvents() {
       const uri = `${this.baseUrl}/event/`;
 

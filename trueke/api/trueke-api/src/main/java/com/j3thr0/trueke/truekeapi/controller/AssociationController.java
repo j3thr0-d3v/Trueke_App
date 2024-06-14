@@ -17,6 +17,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 import java.util.UUID;
@@ -86,11 +87,12 @@ public class AssociationController {
     @PreAuthorize("#association_id == authentication.principal.getAssociation().getId()")
     @PostMapping("/{association_id}/event")
     public ResponseEntity<EventResponse> createEvent (
-            @RequestBody CreateEventRequest createEventRequest,
+            @RequestPart("body") CreateEventRequest createEventRequest,
+            @RequestPart("file") MultipartFile file,
             @PathVariable UUID association_id
     ){
         Association organizer = associationService.findById(association_id);
-        Event event = eventService.createEvent(createEventRequest, organizer);
+        Event event = eventService.createEvent(createEventRequest, organizer, file);
         return ResponseEntity.status(HttpStatus.CREATED).body(EventResponse.of(event));
     }
 

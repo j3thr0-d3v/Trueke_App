@@ -1,5 +1,10 @@
 <script setup>
+import router from '@/router';
+import useAuth from '@/stores/auth';
 import { ref } from 'vue';
+
+//STORES
+const authStore = useAuth();
 
 //IMG VALUES
 const banner = ref('');
@@ -20,6 +25,11 @@ const name = ref('');
 const surname = ref('');
 const email = ref('');
 const username = ref('');
+const dni = ref('');
+const phoneNumber = ref('');
+const password = ref('');
+const verifyPassword = ref('');
+const career = ref('');
 
 
 //METHODS
@@ -64,17 +74,23 @@ function createAssociationRequest(){
 
   let request = {
     name: associationName.value,
-    addres: address.value,
+    address: address.value,
     mission: mission.value,
     cif: cif.value,
     founder: {
       name: name.value,
       surname: surname.value,
-      username: username.value,
       email: email.value,
+      username: username.value,
+      password: password.value,
+      verifyPassword: verifyPassword.value,
+      dni: dni.value,
+      career: career.value,
+      phoneNumber: phoneNumber.value,
     }
   }
-
+  authStore.registerAssociation(request, logo.value, banner.value, profile.value);
+  router.push({name: 'login'});
 }
 
 
@@ -138,7 +154,7 @@ function createAssociationRequest(){
               <div class="col-12 text-center">
                 <div class="profile mx-auto border border-3 border-warning rounded-4 overflow-hidden" :style="`background-image: url('${profilePreview}'); background-size:cover; background-position:center;`"></div>
                 <label for="logo" class="form-label text-white fw-bold">Logo de la Asociación</label>
-                <input @change="loadProfile" class="form-control form-control-sm w-50 mx-auto" id="logo" type="file">
+                <input @change="loadProfile" class="form-control form-control-sm w-50 mx-auto" id="profile" type="file">
               </div>
             </div>
             <div class="row mt-3 ms-1">
@@ -159,13 +175,13 @@ function createAssociationRequest(){
               <div class="col">
                 <div class="input-group">
                   <span class="input-group-text fw-bold">@ Correo</span>
-                  <input v-model="email" type="text" class="form-control" placeholder="ej... Miguel Angel" aria-label="Nombre">
+                  <input v-model="email" type="text" class="form-control" placeholder="correo@correo.com" aria-label="Nombre">
                 </div>
               </div>
               <div class="col">
                 <div class="input-group">
                   <span class="input-group-text fw-bold">Nick</span>
-                  <input v-model="username" type="text" class="form-control" placeholder="ej... Pérez Rodríguez" aria-label="Apellidos">
+                  <input v-model="username" type="text" class="form-control" placeholder="bolita76" aria-label="Apellidos">
                 </div>
               </div>
             </div>
@@ -173,18 +189,38 @@ function createAssociationRequest(){
               <div class="col">
                 <div class="input-group">
                   <span class="input-group-text fw-bold">DNI</span>
-                  <input v-model="email" type="text" class="form-control" placeholder="ej... Miguel Angel" aria-label="Nombre">
+                  <input v-model="dni" type="text" class="form-control" placeholder="87654321D" aria-label="Nombre">
                 </div>
               </div>
               <div class="col">
                 <div class="input-group">
                   <span class="input-group-text fw-bold">Teléfono</span>
-                  <input v-model="username" type="text" class="form-control" placeholder="ej... Pérez Rodríguez" aria-label="Apellidos">
+                  <input v-model="phoneNumber" type="text" class="form-control" placeholder="+34 677 777 777" aria-label="Apellidos">
                 </div>
               </div>
             </div>
+            <h4 class="text-white text-center mt-3 ms-1">Contraseña</h4>
+            <div class="row mt-3 ms-1">
+                <div class="col">
+                    <div class="input-group">
+                        <span class="input-group-text fw-bold">Contraseña</span>
+                        <input v-model="password" type="password" class="form-control">
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="input-group">
+                        <span class="input-group-text fw-bold">Confirmar</span>
+                        <input v-model="verifyPassword" type="password" class="form-control">
+                    </div>
+                </div>
+            </div>
           </div>
-          
+          <div class="row ms-1">
+              <div class="form-floating mt-3">
+                <textarea class="form-control" placeholder="Leave a comment here" id="career" style="height: 145px" v-model="career"></textarea>
+                <label for="career" class="fw-bold text-secondary ms-2">Experiencia laboral y personal</label>
+              </div>
+            </div>
 
         </div>
       </div>
@@ -192,7 +228,7 @@ function createAssociationRequest(){
     </div>
     <div class="row h-15 align-items-center">
       <div class="text-center">
-        <button type="button" class="btn btn-primary rounded-pill font-lemon fs-3 w-25">Registrar</button>
+        <button type="button" @click="createAssociationRequest" class="btn btn-primary rounded-pill font-lemon fs-3 w-25">Registrar</button>
       </div>
     </div>
   </div>

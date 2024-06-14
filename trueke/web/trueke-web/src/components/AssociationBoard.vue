@@ -26,7 +26,15 @@ onMounted(async ()=>{
     </div>
     <div class="row h-70">
       <router-view v-if="$route.path === '/association'" :events="events"></router-view>
+      <router-view v-else></router-view>
     </div>
+    <div class="row h-5 border-top">
+      <div class="btn-group p-0">
+        <router-link to="/association/event/create" class="btn btn-success rounded-0 font-lemon"><i class="bi bi-plus-circle"></i> Crear Evento</router-link>
+        <button class="btn btn-warning rounded-0 font-lemon"><i class="bi bi-person-plus-fill"></i> Añadir Trabajador</button>
+      </div>
+    </div>
+    
   </div>
 </template>
 

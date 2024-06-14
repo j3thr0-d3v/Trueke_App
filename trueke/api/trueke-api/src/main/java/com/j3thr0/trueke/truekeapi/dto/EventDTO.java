@@ -71,6 +71,7 @@ public interface EventDTO {
                     .description(event.getDescription())
                     .location(event.getLocation())
                     .date(event.getStartDate().toLocalDate())
+                    .totalCollaborators(event.getCollaborators().size())
                     .imgUrl(event.getEventImg())
                     .startTime(LocalTime.of(event.getStartDate().getHour(), event.getStartDate().getMinute()))
                     .endTime(LocalTime.of(event.getEndDate().getHour(), event.getEndDate().getMinute()))

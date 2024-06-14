@@ -1,16 +1,18 @@
+import useAuth from "@/stores/auth";
 import MainView from "@/view/MainView.vue";
 import LoginView from "@/view/LoginView.vue";
 import RegisterView from "@/view/RegisterView.vue";
 import EventListComponent from "@/components/EventListComponent.vue";
 import EventDetailComponent from "@/components/EventDetailComponent.vue";
 import { createRouter, createWebHistory } from "vue-router";
-import useAuth from "@/stores/auth";
 import EditCollaboratorView from "@/view/EditCollaboratorView.vue";
 import MainAssociationView from "@/view/MainAssociationView.vue";
 import AssociationEventList from "@/components/AssociationEventList.vue";
-import AssociationInfo from "@/components/AssociationInfo.vue"
-import AssociationCrewList from "@/components/AssociationCrewList.vue"
-import RegisterAssociationView from "@/view/RegisterAssociationView.vue"
+import AssociationInfo from "@/components/AssociationInfo.vue";
+import AssociationCrewList from "@/components/AssociationCrewList.vue";
+import RegisterAssociationView from "@/view/RegisterAssociationView.vue";
+import AssociationEventDetail from "@/components/AssociationEventDetail.vue";
+import CreateEventView from "@/view/CreateEventView.vue";
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -24,6 +26,11 @@ const router = createRouter({
           path: "",
           name: "association-events",
           component: AssociationEventList
+        },
+        {
+          path: "event-organised/:id",
+          name: "association-event-detail",
+          component: AssociationEventDetail
         },
         {
           path: "/info",
@@ -75,6 +82,22 @@ const router = createRouter({
       meta: {
         requireAuth: true,
       },
+    },
+    {
+      path: "/association/event/create",
+      name: "create-event",
+      component: CreateEventView,
+      meta: {
+        requireAuth: true
+      }
+    },
+    {
+      path: "/association/event/edit/:id",
+      name: "edit-event",
+      component: CreateEventView,
+      meta:{
+        requireAuth: true
+      }
     },
     {
       path: "/collaborator/edit",

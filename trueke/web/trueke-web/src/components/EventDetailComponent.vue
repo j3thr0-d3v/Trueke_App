@@ -40,7 +40,6 @@ const isSubscribed = () => {
   }
 };
 
-router.getRoutes().forEach(r => console.log(r))
 </script>
 
 <template>

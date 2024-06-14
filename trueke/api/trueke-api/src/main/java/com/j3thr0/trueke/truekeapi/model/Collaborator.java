@@ -2,6 +2,7 @@ package com.j3thr0.trueke.truekeapi.model;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.ManyToMany;
+import jakarta.persistence.PreRemove;
 import jakarta.persistence.Table;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
@@ -36,5 +37,11 @@ public class Collaborator extends User{
     public void unregisterFromAnEvent(Event event){
         collaborations.remove(event);
         event.getCollaborators().remove(this);
+    }
+
+    @PreRemove
+    public void preRemove(){
+        collaborations.forEach(e->e.getCollaborators().remove(this));
+        collaborations.clear();
     }
 }

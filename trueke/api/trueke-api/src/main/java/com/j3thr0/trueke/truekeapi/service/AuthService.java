@@ -31,15 +31,22 @@ public class AuthService {
     private final PasswordEncoder passwordEncoder;
     private final StorageService storageService;
 
-    public Association registerNewAssociation(RegisterAssociationRequest newAssociationRequest){
+    public Association registerNewAssociation(
+            RegisterAssociationRequest newAssociationRequest,
+            MultipartFile logo,
+            MultipartFile banner,
+            MultipartFile profile
+    ){
         Association association = Association.builder()
                 .name(newAssociationRequest.name())
                 .address(newAssociationRequest.address())
                 .mission(newAssociationRequest.mission())
                 .cif(newAssociationRequest.cif())
+                .logoImg(storageService.store(logo))
+                .bannerImg(storageService.store(banner))
                 .build();
         association =  associationRepository.save(association);
-        Worker worker = registerNewWorker(newAssociationRequest.founder());
+        Worker worker = registerNewWorker(newAssociationRequest.founder(), profile);
         worker.setAssociation(association);
         worker.setRoles(EnumSet.of(UserRoles.WORKER,UserRoles.STAFF));
         userRepository.save(worker);
@@ -64,7 +71,7 @@ public class AuthService {
         return userRepository.save(collaborator);
     }
 
-    public Worker registerNewWorker(SingUpWorkerRequest newWorkerRequest){
+    public Worker registerNewWorker(SingUpWorkerRequest newWorkerRequest, MultipartFile profile){
         Worker worker = Worker.builder()
                 .name(newWorkerRequest.name())
                 .surname(newWorkerRequest.surname())
@@ -73,6 +80,7 @@ public class AuthService {
                 .password(passwordEncoder.encode(newWorkerRequest.password()))
                 .roles(EnumSet.of(UserRoles.WORKER))
                 .phoneNumber(newWorkerRequest.phoneNumber())
+                .avatarImg(storageService.store(profile))
                 .dni(newWorkerRequest.dni())
                 .career(newWorkerRequest.career())
                 .association(newWorkerRequest.associationId()!=null?

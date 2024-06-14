@@ -1,5 +1,6 @@
 <script setup>
 const props = defineProps({
+  id: String,
   title: String,
   imgUrl: String,
   totalCollaborators: Number,
@@ -22,12 +23,15 @@ const parseDate = (dateString) =>{
   let dateParsed = new Date(parseInt(year), parseInt(month) - 1, parseInt(day))
   return dateParsed
 }
+
+
 </script>
 
 <template>
   <div
     class="row h-15 mb-3 mx-3 rounded-3 overflow-hidden border-top border-bottom border-end border-4 border-dark p-0 position-relative"
   >
+
     <div class="col-3 bg-dark d-flex align-items-center p-0">
       <img
         class="border border-dark border-4 rounded-3"
@@ -59,7 +63,7 @@ const parseDate = (dateString) =>{
           <!-- <button id="enter-buttom" class="btn btn-success rounded-4 font-lemon">Ver Detalles</button> -->
           <router-link
             class="btn btn-success rounded-4 font-lemon"
-            
+            :to="{name: 'association-event-detail', params:{id: props.id}}"
             >Ver</router-link
           >
         </div>

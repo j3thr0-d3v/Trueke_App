@@ -47,6 +47,39 @@ const useAuth = defineStore("auth", {
       }
     },
 
+    async registerAssociation(registerAssociationRequest, imgLogo, imgBanner, imgProfile){
+      const uri = `${this.baseURL}/auth/register/association`;
+      try{
+        const formData = new FormData();
+        formData.append("logo", imgLogo);
+        formData.append("banner", imgBanner);
+        formData.append("profile", imgProfile);
+        formData.append(
+          "body", new Blob([JSON.stringify(registerAssociationRequest)],{
+            type: "application/json"
+          })
+        );
+        const response = await axios.post(uri, formData, {
+          headers: {
+            "Content-Type" : "multipart/form-data"
+          }
+        });
+        if (response.data.status) {
+          console.error(
+            "Registration failed:",
+            response.data.message || "Unknown error"
+          );
+          return false;
+        } else {
+          console.log("Registration successful!");
+          return true;
+        }
+      }catch(error){
+        console.error("Registration error:", error);
+        return false;
+      }
+    },
+
     async login(username, password) {
       const uri = `${this.baseURL}/auth/login`;
 
